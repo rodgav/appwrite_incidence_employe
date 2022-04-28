@@ -1,0 +1,17 @@
+{
+  "@@locale": "es",
+  "noRouteFound": "Ruta no encontrada",
+  "close": "Cerrar",
+  "confirm": "Confirmar",
+  "retryAgain": "Volver a intentarlo",
+  "loading": "Cargando...",
+  "sendEmail": "Correo enviado",
+  "accept": "Aceptar",
+  "success": "Éxito",
+  "inputEmail": "Correo",  "inputEmailError": "Correo error",
+  "inputPassword": "Contraseña",
+  "login": "Ingresar",  "error": "Error",
+  "notPermission": "No tiene permisos",
+  "recover": "Recuperar",
+  "forgotPassword": "Has olvidado tu cotraseña"
+}

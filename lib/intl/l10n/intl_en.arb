@@ -1,0 +1,19 @@
+{
+  "@@locale": "en",
+  "noRouteFound": "Route not found",
+  "close": "Close",
+  "confirm": "Confirm",
+  "retryAgain": "Retry again",
+  "loading": "Loading...",
+  "sendEmail": "Send email",
+  "accept": "Accept",
+  "success": "Success",
+  "inputEmail": "Email",
+  "inputEmailError": "Email error",
+  "inputPassword": "Password",
+  "login": "Login",
+  "error": "Error",
+  "notPermission": "Not permission",
+  "recover": "Recover",
+  "forgotPassword": "Forgot password"
+}
