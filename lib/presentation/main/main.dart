@@ -53,7 +53,7 @@ class _MainViewState extends State<MainView> {
               _getContentWidget(size, s)),
       floatingActionButton: FloatingActionButton(child: const Icon(Icons.add),
           onPressed: () =>
-              GoRouter.of(context).push(Routes.incidenceRoute + '/new')),
+              GoRouter.of(context).go(Routes.incidenceRoute + '/new')),
     );
   }
 
@@ -111,7 +111,7 @@ class _MainViewState extends State<MainView> {
                                     itemBuilder: (_, index) {
                                       final incidence = incidences[index];
                                       return IncidenceItem(incidence, () {
-                                        GoRouter.of(context).push(
+                                        GoRouter.of(context).go(
                                             Routes.incidenceRoute +
                                                 '/${incidence.id}',
                                             extra: incidence);

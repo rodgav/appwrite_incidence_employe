@@ -8,6 +8,7 @@ import 'package:appwrite_incidence_employe/intl/generated/l10n.dart';
 import 'package:appwrite_incidence_employe/presentation/common/state_render/state_render_impl.dart';
 import 'package:appwrite_incidence_employe/presentation/global_widgets/responsive.dart';
 import 'package:appwrite_incidence_employe/presentation/resources/assets_manager.dart';
+import 'package:appwrite_incidence_employe/presentation/resources/routes_manager.dart';
 import 'package:appwrite_incidence_employe/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -275,7 +276,7 @@ class _IncidenceViewState extends State<IncidenceView> {
                             }
                           }
                         } else {
-                          GoRouter.of(context).pop();
+                          GoRouter.of(context).go(Routes.mainRoute);
                         }
                       },
                       child: Text(

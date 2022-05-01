@@ -22,6 +22,7 @@ class RouteGenerator {
   static final AppPreferences _appPreferences = instance<AppPreferences>();
 
   static final router = GoRouter(
+    routerNeglect: true,
       routes: [
         GoRoute(
             path: Routes.splashRoute,

@@ -7,6 +7,7 @@ import 'package:appwrite_incidence_employe/presentation/base/base_viewmodel.dart
 import 'package:appwrite_incidence_employe/presentation/common/dialog_render/dialog_render.dart';
 import 'package:appwrite_incidence_employe/presentation/common/state_render/state_render.dart';
 import 'package:appwrite_incidence_employe/presentation/common/state_render/state_render_impl.dart';
+import 'package:appwrite_incidence_employe/presentation/resources/routes_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
@@ -110,7 +111,7 @@ class IncidenceViewModel extends BaseViewModel
             (l) => _dialogRender.showPopUp(context, DialogRendererType.errorDialog,
             (s.error).toUpperCase(), l.message, null, null, null), (r) {
       inputIncidenceSel.add(IncidenceSel());
-      GoRouter.of(context).pop();
+      GoRouter.of(context).go(Routes.mainRoute);
     });
   }
 }
