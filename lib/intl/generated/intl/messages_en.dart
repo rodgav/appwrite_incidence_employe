@@ -23,21 +23,41 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accept": MessageLookupByLibrary.simpleMessage("Accept"),
+        "active": MessageLookupByLibrary.simpleMessage("Active"),
+        "add": MessageLookupByLibrary.simpleMessage("Add"),
         "close": MessageLookupByLibrary.simpleMessage("Close"),
         "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
+        "dateCreate": MessageLookupByLibrary.simpleMessage("Date create"),
+        "dateSolution": MessageLookupByLibrary.simpleMessage("Date solution"),
+        "descrError": MessageLookupByLibrary.simpleMessage("Description error"),
+        "descriptionIncidence":
+            MessageLookupByLibrary.simpleMessage("Description incidence"),
+        "details": MessageLookupByLibrary.simpleMessage("Details"),
+        "employe": MessageLookupByLibrary.simpleMessage("Employe"),
+        "employeError": MessageLookupByLibrary.simpleMessage("Employe error"),
         "error": MessageLookupByLibrary.simpleMessage("Error"),
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Forgot password"),
+        "incidence": MessageLookupByLibrary.simpleMessage("Incidence"),
         "inputEmail": MessageLookupByLibrary.simpleMessage("Email"),
         "inputEmailError": MessageLookupByLibrary.simpleMessage("Email error"),
         "inputPassword": MessageLookupByLibrary.simpleMessage("Password"),
         "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
+        "nameError": MessageLookupByLibrary.simpleMessage("Name error"),
+        "nameIncidence": MessageLookupByLibrary.simpleMessage("Name incidence"),
+        "noData": MessageLookupByLibrary.simpleMessage("No data"),
         "noRouteFound": MessageLookupByLibrary.simpleMessage("Route not found"),
         "notPermission": MessageLookupByLibrary.simpleMessage("Not permission"),
+        "pickImage": MessageLookupByLibrary.simpleMessage("Pick image"),
+        "priority": MessageLookupByLibrary.simpleMessage("Priority"),
+        "priorityError": MessageLookupByLibrary.simpleMessage("Priority error"),
         "recover": MessageLookupByLibrary.simpleMessage("Recover"),
         "retryAgain": MessageLookupByLibrary.simpleMessage("Retry again"),
+        "save": MessageLookupByLibrary.simpleMessage("Save"),
         "sendEmail": MessageLookupByLibrary.simpleMessage("Send email"),
-        "success": MessageLookupByLibrary.simpleMessage("Success")
+        "solution": MessageLookupByLibrary.simpleMessage("Solution"),
+        "success": MessageLookupByLibrary.simpleMessage("Success"),
+        "supervisor": MessageLookupByLibrary.simpleMessage("Supervisor")
       };
 }

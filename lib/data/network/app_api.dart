@@ -5,12 +5,8 @@ import 'package:appwrite/models.dart';
 import 'package:appwrite_incidence_employe/app/app_preferences.dart';
 import 'package:appwrite_incidence_employe/app/constants.dart';
 import 'package:appwrite_incidence_employe/data/request/request.dart';
-import 'package:appwrite_incidence_employe/data/responses/area_response.dart';
 import 'package:appwrite_incidence_employe/data/responses/incidence_response.dart';
-import 'package:appwrite_incidence_employe/data/responses/user_response.dart';
-import 'package:appwrite_incidence_employe/domain/model/area_model.dart';
 import 'package:appwrite_incidence_employe/domain/model/incidence_model.dart';
-import 'package:appwrite_incidence_employe/domain/model/user_model.dart';
 import 'package:http_parser/http_parser.dart';
 
 class AppServiceClient {
@@ -32,68 +28,16 @@ class AppServiceClient {
   Future<dynamic> deleteSession(String sessionId) =>
       _account.deleteSession(sessionId: sessionId);
 
-  Future<DocumentList> areas(int limit, int offset) => _database.listDocuments(
-      collectionId: Constant.areasId, limit: limit, offset: offset);
-
-  Future<DocumentList> areasSearch(String search, int limit, int offset) =>
-      _database.listDocuments(
-          collectionId: Constant.areasId,
-          queries: [Query.search('name', search)],
-          limit: limit,
-          offset: offset);
-
-  Future<Document> areaCreate(Area area) => _database.createDocument(
-      collectionId: Constant.areasId,
-      documentId: 'unique()',
-      data: areaToJson(area),
-      read: ['role:member'],
-      write: ['role:member']);
-
-  Future<Document> areaUpdate(Area area) => _database.updateDocument(
-      collectionId: Constant.areasId,
-      documentId: area.id,
-      data: areaToJson(area));
-
-  Future<DocumentList> incidences(int limit, int offset) =>
-      _database.listDocuments(
-          collectionId: Constant.incidencesId, limit: limit, offset: offset);
-
-  Future<DocumentList> incidencesArea(String area, int limit, int offset) =>
+  Future<DocumentList> incidences(
+          List<dynamic> queries, int limit, int offset) =>
       _database.listDocuments(
           collectionId: Constant.incidencesId,
-          queries: [Query.equal('area', area)],
+          queries: queries,
           limit: limit,
           offset: offset);
 
-  Future<DocumentList> incidencesAreaPriority(
-          String area, String priority, int limit, int offset) =>
-      _database.listDocuments(
-          collectionId: Constant.incidencesId,
-          queries: [
-            Query.equal('area', area),
-            Query.equal('priority', priority)
-          ],
-          limit: limit,
-          offset: offset);
-
-  Future<DocumentList> incidencesAreaPriorityActive(
-          String area, bool active, String priority, int limit, int offset) =>
-      _database.listDocuments(
-          collectionId: Constant.incidencesId,
-          queries: [
-            Query.equal('area', area),
-            Query.equal('priority', priority),
-            Query.equal('active', active)
-          ],
-          limit: limit,
-          offset: offset);
-
-  Future<DocumentList> incidencesSearch(String search, int limit, int offset) =>
-      _database.listDocuments(
-          collectionId: Constant.incidencesId,
-          queries: [Query.search('name', search)],
-          limit: limit,
-          offset: offset);
+  Future<Document> incidence(String incidenceId) => _database.getDocument(
+      collectionId: Constant.incidencesId, documentId: incidenceId);
 
   Future<Document> incidenceCreate(Incidence incidence) =>
       _database.createDocument(
@@ -103,94 +47,8 @@ class AppServiceClient {
           read: ['role:member'],
           write: ['role:member']);
 
-  Future<Document> incidenceUpdate(Incidence incidence) =>
-      _database.updateDocument(
-          collectionId: Constant.incidencesId,
-          documentId: incidence.id,
-          data: incidenceToJson(incidence));
-
   Future<Document> user(String userId) =>
       _database.getDocument(collectionId: Constant.usersId, documentId: userId);
-
-  Future<DocumentList> users(int limit, int offset) => _database.listDocuments(
-      collectionId: Constant.usersId,
-      queries: [],
-      limit: limit,
-      offset: offset);
-
-  Future<DocumentList> usersTypeUser(String typeUser, int limit, int offset) =>
-      _database.listDocuments(
-          collectionId: Constant.usersId,
-          queries: [Query.equal('type_user', typeUser)],
-          limit: limit,
-          offset: offset);
-
-  Future<DocumentList> usersTypeUserArea(
-          String typeUser, String area, int limit, int offset) =>
-      _database.listDocuments(
-          collectionId: Constant.usersId,
-          queries: [
-            Query.equal('type_user', typeUser),
-            Query.equal('area', area)
-          ],
-          limit: limit,
-          offset: offset);
-
-  Future<DocumentList> usersTypeUserAreaActive(
-          String typeUser, String area, bool active, int limit, int offset) =>
-      _database.listDocuments(
-          collectionId: Constant.usersId,
-          queries: [
-            Query.equal('type_user', typeUser),
-            Query.equal('area', area),
-            Query.equal('active', active)
-          ],
-          limit: limit,
-          offset: offset);
-
-  Future<DocumentList> usersSearch(String search, int limit, int offset) =>
-      _database.listDocuments(
-          collectionId: Constant.usersId,
-          queries: [Query.search('name', search)],
-          limit: limit,
-          offset: offset);
-
-  Future<Document> userCreate(LoginRequest loginRequest, String area,
-      bool active, String typeUser) async {
-    final user = await _account.create(
-        userId: 'unique()',
-        email: loginRequest.email,
-        password: loginRequest.password,
-        name: loginRequest.name);
-    return _database.createDocument(
-        collectionId: Constant.usersId,
-        documentId: user.$id,
-        data: {
-          'name': user.name,
-          'area': area,
-          'active': active,
-          'type_user': typeUser
-        },
-        read: [
-          'role:member'
-        ],
-        write: [
-          'role:member'
-        ]);
-  }
-
-  Future<Document> userUpdate(UsersModel users) => _database.updateDocument(
-      collectionId: Constant.usersId,
-      documentId: users.id,
-      data: usersToJson(users));
-
-  Future<DocumentList> prioritys(int limit, int offset) =>
-      _database.listDocuments(
-          collectionId: Constant.prioritysId, limit: limit, offset: offset);
-
-  Future<DocumentList> typeUsers(int limit, int offset) =>
-      _database.listDocuments(
-          collectionId: Constant.typeUsersId, limit: limit, offset: offset);
 
   Future<File> createFile(Uint8List uint8list, String name) =>
       _storage.createFile(
@@ -202,6 +60,7 @@ class AppServiceClient {
           read: ['role:all'],
           write: ['role:all']);
 
-  Future deleteFile(String idFile) =>
-      _storage.deleteFile(bucketId: Constant.buckedId, fileId: idFile);
+  Future<DocumentList> prioritys(int limit, int offset) =>
+      _database.listDocuments(
+          collectionId: Constant.prioritysId, limit: limit, offset: offset);
 }

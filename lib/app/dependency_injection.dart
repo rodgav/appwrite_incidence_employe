@@ -6,10 +6,12 @@ import 'package:appwrite_incidence_employe/data/network/network_info.dart';
 import 'package:appwrite_incidence_employe/data/repository/repository_impl.dart';
 import 'package:appwrite_incidence_employe/domain/repository/repository.dart';
 import 'package:appwrite_incidence_employe/domain/usecase/forgot_password_usecase.dart';
+import 'package:appwrite_incidence_employe/domain/usecase/incidence_usecase.dart';
 import 'package:appwrite_incidence_employe/domain/usecase/login_usecase.dart';
 import 'package:appwrite_incidence_employe/domain/usecase/main_usecase.dart';
 import 'package:appwrite_incidence_employe/presentation/common/dialog_render/dialog_render.dart';
 import 'package:appwrite_incidence_employe/presentation/forgot_password/forgot_password_viewmodel.dart';
+import 'package:appwrite_incidence_employe/presentation/incidence/incidence_viewmodel.dart';
 import 'package:appwrite_incidence_employe/presentation/login/login_viewmodel.dart';
 import 'package:appwrite_incidence_employe/presentation/main/main_viewmodel.dart';
 import 'package:flutter/foundation.dart';
@@ -50,7 +52,7 @@ void initLoginModule() {
     instance
         .registerLazySingleton<LoginUseCase>(() => LoginUseCase(instance()));
     instance.registerLazySingleton<LoginViewModel>(
-        () => LoginViewModel(instance(), instance(),instance()));
+        () => LoginViewModel(instance(), instance(), instance()));
   }
 }
 
@@ -67,6 +69,15 @@ void initMainModule() {
   if (!GetIt.I.isRegistered<MainUseCase>()) {
     instance.registerLazySingleton<MainUseCase>(() => MainUseCase(instance()));
     instance.registerLazySingleton<MainViewModel>(
-        () => MainViewModel(instance(), instance(),instance()));
+        () => MainViewModel(instance(), instance(), instance()));
+  }
+}
+
+void initIncidenceModule() {
+  if (!GetIt.I.isRegistered<IncidenceUseCase>()) {
+    instance.registerLazySingleton<IncidenceUseCase>(
+        () => IncidenceUseCase(instance()));
+    instance.registerLazySingleton<IncidenceViewModel>(
+        () => IncidenceViewModel(instance(),instance()));
   }
 }

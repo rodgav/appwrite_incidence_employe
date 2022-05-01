@@ -53,7 +53,7 @@ class LoginViewModel extends BaseViewModel
               ErrorState(StateRendererType.fullScreenErrorState, f.message)),
           (user) async {
         if (user.active && user.typeUser == AppStrings.employe) {
-          await _appPreferences.setSessionIds(r.$id, r.userId, user.name);
+          await _appPreferences.setSessionIds(r.$id, r.userId, user.name,user.typeUser);
           GoRouter.of(context).go(Routes.mainRoute);
         } else {
           _dialogRender.showPopUp(

@@ -4,12 +4,8 @@ class Constant {
 
   //collections
   static const String incidencesId = '';
-  static const String areasId = '';
   static const String usersId = '';
   static const String prioritysId = '';
-  static const String typeUsersId = '';
-  //create attributes according to /lib/domain/model/*.dart
-  //prioritys and typeUsers aare name_model.dart
 
   //encryptKey length == 16
   static const String encryptKey = '';

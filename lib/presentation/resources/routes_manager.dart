@@ -1,7 +1,9 @@
 import 'package:appwrite_incidence_employe/app/app_preferences.dart';
 import 'package:appwrite_incidence_employe/app/dependency_injection.dart';
+import 'package:appwrite_incidence_employe/domain/model/incidence_model.dart';
 import 'package:appwrite_incidence_employe/intl/generated/l10n.dart';
 import 'package:appwrite_incidence_employe/presentation/forgot_password/forgot_password.dart';
+import 'package:appwrite_incidence_employe/presentation/incidence/incidence.dart';
 import 'package:appwrite_incidence_employe/presentation/login/login.dart';
 import 'package:appwrite_incidence_employe/presentation/main/main.dart';
 import 'package:appwrite_incidence_employe/presentation/splash/splash.dart';
@@ -13,6 +15,7 @@ class Routes {
   static const String loginRoute = '/login';
   static const String forgotPasswordRoute = '/forgotPassword';
   static const String mainRoute = '/main';
+  static const String incidenceRoute = '/incidence';
 }
 
 class RouteGenerator {
@@ -42,6 +45,13 @@ class RouteGenerator {
             builder: (context, state) {
               initMainModule();
               return const MainView();
+            }),
+        GoRoute(
+            path: Routes.incidenceRoute+'/:inId',
+            builder: (context, state) {
+              initIncidenceModule();
+              return IncidenceView(state.params['inId']!,
+                  incidence: state.extra as Incidence?);
             }),
       ],
       errorBuilder: (context, state) => unDefinedRoute(context),

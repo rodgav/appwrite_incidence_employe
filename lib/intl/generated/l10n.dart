@@ -209,6 +209,196 @@ class S {
       args: [],
     );
   }
+
+  /// `No hay datos`
+  String get noData {
+    return Intl.message(
+      'No hay datos',
+      name: 'noData',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Activo`
+  String get active {
+    return Intl.message(
+      'Activo',
+      name: 'active',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Detalles`
+  String get details {
+    return Intl.message(
+      'Detalles',
+      name: 'details',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Añadir`
+  String get add {
+    return Intl.message(
+      'Añadir',
+      name: 'add',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Incidencia`
+  String get incidence {
+    return Intl.message(
+      'Incidencia',
+      name: 'incidence',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nombre de incidence`
+  String get nameIncidence {
+    return Intl.message(
+      'Nombre de incidence',
+      name: 'nameIncidence',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nombre error`
+  String get nameError {
+    return Intl.message(
+      'Nombre error',
+      name: 'nameError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Descripción de incidencia`
+  String get descriptionIncidence {
+    return Intl.message(
+      'Descripción de incidencia',
+      name: 'descriptionIncidence',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Descripción error`
+  String get descrError {
+    return Intl.message(
+      'Descripción error',
+      name: 'descrError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fecha de creación`
+  String get dateCreate {
+    return Intl.message(
+      'Fecha de creación',
+      name: 'dateCreate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Empleado`
+  String get employe {
+    return Intl.message(
+      'Empleado',
+      name: 'employe',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Empleado error`
+  String get employeError {
+    return Intl.message(
+      'Empleado error',
+      name: 'employeError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Prioridad`
+  String get priority {
+    return Intl.message(
+      'Prioridad',
+      name: 'priority',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Prioridad error`
+  String get priorityError {
+    return Intl.message(
+      'Prioridad error',
+      name: 'priorityError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Guardar`
+  String get save {
+    return Intl.message(
+      'Guardar',
+      name: 'save',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Elegir imagen`
+  String get pickImage {
+    return Intl.message(
+      'Elegir imagen',
+      name: 'pickImage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Supervisor`
+  String get supervisor {
+    return Intl.message(
+      'Supervisor',
+      name: 'supervisor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Solución`
+  String get solution {
+    return Intl.message(
+      'Solución',
+      name: 'solution',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fecha de solución`
+  String get dateSolution {
+    return Intl.message(
+      'Fecha de solución',
+      name: 'dateSolution',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

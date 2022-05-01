@@ -8,6 +8,7 @@ const String languageKey = 'languageKey';
 const String sessionKey = 'sessionKey';
 const String userKey = 'userKey';
 const String nameKey = 'nameKey';
+const String typeUserKey = 'typeUserKey';
 
 class AppPreferences {
   final SharedPreferences _sharedPreferences;
@@ -44,13 +45,15 @@ class AppPreferences {
   }
 
   Future<void> setSessionIds(
-      String sessionId, String userId, String name) async {
+      String sessionId, String userId, String name,String typeUser) async {
     await _sharedPreferences.setString(
         userKey, _encryptHelper.encrypt(userId) ?? '');
     await _sharedPreferences.setString(
         sessionKey, _encryptHelper.encrypt(sessionId) ?? '');
     await _sharedPreferences.setString(
         nameKey, _encryptHelper.encrypt(name) ?? '');
+    await _sharedPreferences.setString(
+        typeUserKey, _encryptHelper.encrypt(typeUser) ?? '');
   }
 
   String getUserId() {
@@ -76,6 +79,14 @@ class AppPreferences {
     final nameDecry = _encryptHelper.decrypt(nameEncry) ?? '';
     if (nameDecry != '') {
       return nameDecry;
+    }
+    return '';
+  }
+  String getTypeUser() {
+    final typeUserEncry = _sharedPreferences.getString(typeUserKey) ?? '';
+    final typeUserDecry = _encryptHelper.decrypt(typeUserEncry) ?? '';
+    if (typeUserDecry != '') {
+      return typeUserDecry;
     }
     return '';
   }

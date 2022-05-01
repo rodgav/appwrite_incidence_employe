@@ -1,6 +1,7 @@
 import 'package:appwrite_incidence_employe/app/dependency_injection.dart';
 import 'package:appwrite_incidence_employe/intl/generated/l10n.dart';
 import 'package:appwrite_incidence_employe/presentation/common/state_render/state_render_impl.dart';
+import 'package:appwrite_incidence_employe/presentation/global_widgets/responsive.dart';
 import 'package:appwrite_incidence_employe/presentation/global_widgets/text_form_widget.dart';
 import 'package:appwrite_incidence_employe/presentation/resources/assets_manager.dart';
 import 'package:appwrite_incidence_employe/presentation/resources/color_manager.dart';
@@ -30,7 +31,7 @@ class _LoginViewState extends State<LoginView> {
         .addListener(() => _viewModel.setEmail(_emailController.text.trim()));
     _passwordController.addListener(
         () => _viewModel.setPassword(_passwordController.text.trim()));
-    _emailController.text = 'prueba@gmail.com';
+    _emailController.text = 'employe@gmail.com';
     _passwordController.text = '12345678';
   }
 
@@ -58,9 +59,15 @@ class _LoginViewState extends State<LoginView> {
   }
 
   Widget _getContentWidget(Size size, S s) {
+    return ResponsiveWid(
+        smallScreen: _form(size.width * 0.8, s),
+        largeScreen: _form(size.width * 0.5, s));
+  }
+
+  Widget _form(double width, S s) {
     return Center(
       child: SizedBox(
-        width: kIsWeb ? size.width * 0.5 : size.width * 0.8,
+        width: width,
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(
@@ -96,26 +103,26 @@ class _LoginViewState extends State<LoginView> {
                 StreamBuilder<bool>(
                     stream: _viewModel.outputInputValid,
                     builder: (_, snapshot) => SizedBox(
-                          width: size.width,
-                          height: AppSize.s40,
-                          child: ElevatedButton(
-                              style: Theme.of(context)
-                                  .elevatedButtonTheme
-                                  .style!
-                                  .copyWith(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              (snapshot.data ?? false)
-                                                  ? ColorManager.primary
-                                                  : ColorManager.white),
-                                      side: MaterialStateProperty.all(
-                                          BorderSide(
-                                              color: ColorManager.primary))),
-                              onPressed: (snapshot.data ?? false)
-                                  ? () => _viewModel.login(context)
-                                  : null,
-                              child: Text(s.login)),
-                        )),
+                      width: double.infinity,
+                      height: AppSize.s40,
+                      child: ElevatedButton(
+                          style: Theme.of(context)
+                              .elevatedButtonTheme
+                              .style!
+                              .copyWith(
+                              backgroundColor:
+                              MaterialStateProperty.all(
+                                  (snapshot.data ?? false)
+                                      ? ColorManager.primary
+                                      : ColorManager.white),
+                              side: MaterialStateProperty.all(
+                                  BorderSide(
+                                      color: ColorManager.primary))),
+                          onPressed: (snapshot.data ?? false)
+                              ? () => _viewModel.login(context)
+                              : null,
+                          child: Text(s.login)),
+                    )),
                 const SizedBox(height: AppSize.s10),
                 TextButton(
                     onPressed: () =>

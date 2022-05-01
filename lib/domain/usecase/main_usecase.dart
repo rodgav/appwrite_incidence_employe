@@ -1,5 +1,4 @@
 import 'package:appwrite_incidence_employe/data/network/failure.dart';
-import 'package:appwrite_incidence_employe/domain/model/area_model.dart';
 import 'package:appwrite_incidence_employe/domain/model/incidence_model.dart';
 import 'package:appwrite_incidence_employe/domain/model/user_model.dart';
 import 'package:appwrite_incidence_employe/domain/repository/repository.dart';
@@ -9,8 +8,6 @@ import 'package:dartz/dartz.dart';
 class MainUseCase
     implements
         BaseUseCase<MainUseCaseInput, List<Incidence>>,
-        MainUseCaseAreas<MainUseCaseInput, List<Area>>,
-        MainUseCaseUsers<MainUseCaseInput, List<UsersModel>>,
         MainUseCaseDeleteSession<MainDeleteSessionUseCaseInput, dynamic>,
         MainUseCaseAccount<String, UsersModel> {
   final Repository _repository;
@@ -19,15 +16,7 @@ class MainUseCase
 
   @override
   Future<Either<Failure, List<Incidence>>> execute(MainUseCaseInput input) =>
-      _repository.incidencesSearch(input.search, input.limit, input.offset);
-
-  @override
-  Future<Either<Failure, List<Area>>> areas(MainUseCaseInput input) =>
-      _repository.areasSearch(input.search, input.limit, input.offset);
-
-  @override
-  Future<Either<Failure, List<UsersModel>>> users(MainUseCaseInput input) =>
-      _repository.usersSearch(input.search, input.limit, input.offset);
+      _repository.incidences(input.queries, input.limit, input.offset);
 
   @override
   Future<Either<Failure, dynamic>> deleteSession(
@@ -40,24 +29,16 @@ class MainUseCase
 }
 
 class MainUseCaseInput {
-  String search;
+  List<dynamic> queries;
   int limit, offset;
 
-  MainUseCaseInput(this.search, this.limit, this.offset);
+  MainUseCaseInput(this.queries, this.limit, this.offset);
 }
 
 class MainDeleteSessionUseCaseInput {
   String sessionId;
 
   MainDeleteSessionUseCaseInput(this.sessionId);
-}
-
-abstract class MainUseCaseAreas<In, Out> {
-  Future<Either<Failure, Out>> areas(In input);
-}
-
-abstract class MainUseCaseUsers<In, Out> {
-  Future<Either<Failure, Out>> users(In input);
 }
 
 abstract class MainUseCaseDeleteSession<In, Out> {
