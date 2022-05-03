@@ -25,6 +25,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "accept": MessageLookupByLibrary.simpleMessage("Aceptar"),
         "active": MessageLookupByLibrary.simpleMessage("Activo"),
         "add": MessageLookupByLibrary.simpleMessage("Añadir"),
+        "area": MessageLookupByLibrary.simpleMessage("Área"),
+        "changeLanguage":
+            MessageLookupByLibrary.simpleMessage("Cambiar de lenguaje"),
         "close": MessageLookupByLibrary.simpleMessage("Cerrar"),
         "confirm": MessageLookupByLibrary.simpleMessage("Confirmar"),
         "dateCreate": MessageLookupByLibrary.simpleMessage("Fecha de creación"),
@@ -64,6 +67,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "sendEmail": MessageLookupByLibrary.simpleMessage("Correo enviado"),
         "solution": MessageLookupByLibrary.simpleMessage("Solución"),
         "success": MessageLookupByLibrary.simpleMessage("Éxito"),
-        "supervisor": MessageLookupByLibrary.simpleMessage("Supervisor")
+        "supervisor": MessageLookupByLibrary.simpleMessage("Supervisor"),
+        "typeUser": MessageLookupByLibrary.simpleMessage("Tipo de usuario"),
+        "user": MessageLookupByLibrary.simpleMessage("Usuario")
       };
 }

@@ -1,13 +1,19 @@
+import 'package:appwrite_incidence_employe/app/app_preferences.dart';
 import 'package:appwrite_incidence_employe/app/dependency_injection.dart';
 import 'package:appwrite_incidence_employe/domain/model/incidence_model.dart';
 import 'package:appwrite_incidence_employe/domain/model/incidence_sel.dart';
+import 'package:appwrite_incidence_employe/domain/model/user_model.dart';
 import 'package:appwrite_incidence_employe/intl/generated/l10n.dart';
 import 'package:appwrite_incidence_employe/presentation/common/state_render/state_render_impl.dart';
 import 'package:appwrite_incidence_employe/presentation/global_widgets/incidence.dart';
 import 'package:appwrite_incidence_employe/presentation/global_widgets/responsive.dart';
+import 'package:appwrite_incidence_employe/presentation/resources/assets_manager.dart';
+import 'package:appwrite_incidence_employe/presentation/resources/color_manager.dart';
+import 'package:appwrite_incidence_employe/presentation/resources/language_manager.dart';
 import 'package:appwrite_incidence_employe/presentation/resources/routes_manager.dart';
 import 'package:appwrite_incidence_employe/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:go_router/go_router.dart';
 
 import 'main_viewmodel.dart';
@@ -21,6 +27,7 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   final _viewModel = instance<MainViewModel>();
+  final _appPreferences = instance<AppPreferences>();
 
   _bind() {
     _viewModel.start();
@@ -43,6 +50,77 @@ class _MainViewState extends State<MainView> {
     final size = MediaQuery.of(context).size;
     final s = S.of(context);
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: ColorManager.white,
+        title: SizedBox(
+            height: AppSize.s60,
+            child: Image.asset(
+              ImageAssets.logo,
+              fit: BoxFit.contain,
+            )),
+        centerTitle: false,
+        actions: [
+          SizedBox(
+            width: AppSize.s60,
+            child: PopupMenuButton<String>(
+              tooltip: s.changeLanguage,
+              itemBuilder: (_) => LanguageType.values
+                  .map((e) =>
+                      PopupMenuItem(child: Text(e.name), value: e.getValue()))
+                  .toList(),
+              child: Center(
+                  child: Text(
+                _appPreferences.getAppLanguage(),
+                style: Theme.of(context).textTheme.bodyText2,
+              )),
+              onSelected: (value) {
+                _appPreferences.setAppLanguage(value);
+                Phoenix.rebirth(context);
+              },
+            ),
+          ),
+          const SizedBox(width: AppSize.s10),
+          StreamBuilder<UsersModel>(
+              stream: _viewModel.outputUser,
+              builder: (_, snapshot) {
+                final user = snapshot.data;
+                return SizedBox(
+                  width: AppSize.s60,
+                  child: PopupMenuButton<String>(
+                      tooltip: user?.name ?? s.user,
+                      itemBuilder: (_) => [
+                            PopupMenuItem(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: AppPadding.p10, horizontal: 40),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('${s.user}: ${user?.name ?? s.user}'),
+                                  Text(
+                                      '${s.typeUser}: ${user?.typeUser ?? s.typeUser}'),
+                                  Text(
+                                      '${s.active}: ${user?.active ?? s.active}'),
+                                  Text('${s.area}: ${user?.area ?? s.area}'),
+                                ],
+                              ),
+                            ),
+                            PopupMenuItem(
+                              child: ListTile(
+                                leading: const Icon(Icons.close),
+                                title: Text(s.close),
+                                onTap: () {
+                                  _viewModel.deleteSession(context);
+                                },
+                              ),
+                            )
+                          ],
+                      icon: Icon(Icons.person, color: ColorManager.black)),
+                );
+              }),
+          const SizedBox(width: AppSize.s10)
+        ],
+      ),
       body: StreamBuilder<FlowState>(
           stream: _viewModel.outputState,
           builder: (context, snapshot) =>
@@ -51,7 +129,8 @@ class _MainViewState extends State<MainView> {
                 _viewModel.inputState.add(ContentState());
               }, () {}) ??
               _getContentWidget(size, s)),
-      floatingActionButton: FloatingActionButton(child: const Icon(Icons.add),
+      floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
           onPressed: () =>
               GoRouter.of(context).go(Routes.incidenceRoute + '/new')),
     );
@@ -76,7 +155,8 @@ class _MainViewState extends State<MainView> {
                   if (scrollInfo.metrics.maxScrollExtent ==
                       scrollInfo.metrics.pixels) {
                     if (incidenceSel?.active != null) {
-                      _viewModel.incidencesActive(incidenceSel?.active ?? false);
+                      _viewModel
+                          .incidencesActive(incidenceSel?.active ?? false);
                     } else {
                       _viewModel.incidences(false);
                     }

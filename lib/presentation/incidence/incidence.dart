@@ -4,13 +4,17 @@ import 'package:appwrite_incidence_employe/app/dependency_injection.dart';
 import 'package:appwrite_incidence_employe/domain/model/incidence_model.dart';
 import 'package:appwrite_incidence_employe/domain/model/incidence_sel.dart';
 import 'package:appwrite_incidence_employe/domain/model/name_model.dart';
+import 'package:appwrite_incidence_employe/domain/model/user_model.dart';
 import 'package:appwrite_incidence_employe/intl/generated/l10n.dart';
 import 'package:appwrite_incidence_employe/presentation/common/state_render/state_render_impl.dart';
 import 'package:appwrite_incidence_employe/presentation/global_widgets/responsive.dart';
 import 'package:appwrite_incidence_employe/presentation/resources/assets_manager.dart';
+import 'package:appwrite_incidence_employe/presentation/resources/color_manager.dart';
+import 'package:appwrite_incidence_employe/presentation/resources/language_manager.dart';
 import 'package:appwrite_incidence_employe/presentation/resources/routes_manager.dart';
 import 'package:appwrite_incidence_employe/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:go_router/go_router.dart';
 
 import 'incidence_viewmodel.dart';
@@ -101,6 +105,77 @@ class _IncidenceViewState extends State<IncidenceView> {
     final size = MediaQuery.of(context).size;
     final s = S.of(context);
     return Scaffold(
+        appBar: AppBar(
+          backgroundColor: ColorManager.white,
+          title: SizedBox(
+              height: AppSize.s60,
+              child: Image.asset(
+                ImageAssets.logo,
+                fit: BoxFit.contain,
+              )),
+          centerTitle: false,
+          actions: [
+            SizedBox(
+              width: AppSize.s60,
+              child: PopupMenuButton<String>(
+                tooltip: s.changeLanguage,
+                itemBuilder: (_) => LanguageType.values
+                    .map((e) =>
+                        PopupMenuItem(child: Text(e.name), value: e.getValue()))
+                    .toList(),
+                child: Center(
+                    child: Text(
+                  _appPreferences.getAppLanguage(),
+                  style: Theme.of(context).textTheme.bodyText2,
+                )),
+                onSelected: (value) {
+                  _appPreferences.setAppLanguage(value);
+                  Phoenix.rebirth(context);
+                },
+              ),
+            ),
+            const SizedBox(width: AppSize.s10),
+            StreamBuilder<UsersModel>(
+                stream: _viewModel.outputUser,
+                builder: (_, snapshot) {
+                  final user = snapshot.data;
+                  return SizedBox(
+                    width: AppSize.s60,
+                    child: PopupMenuButton<String>(
+                        tooltip: user?.name ?? s.user,
+                        itemBuilder: (_) => [
+                              PopupMenuItem(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: AppPadding.p10, horizontal: 40),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('${s.user}: ${user?.name ?? s.user}'),
+                                    Text(
+                                        '${s.typeUser}: ${user?.typeUser ?? s.typeUser}'),
+                                    Text(
+                                        '${s.active}: ${user?.active ?? s.active}'),
+                                    Text('${s.area}: ${user?.area ?? s.area}'),
+                                  ],
+                                ),
+                              ),
+                              PopupMenuItem(
+                                child: ListTile(
+                                  leading: const Icon(Icons.close),
+                                  title: Text(s.close),
+                                  onTap: () {
+                                    _viewModel.deleteSession(context);
+                                  },
+                                ),
+                              )
+                            ],
+                        icon: Icon(Icons.person, color: ColorManager.black)),
+                  );
+                }),
+            const SizedBox(width: AppSize.s10)
+          ],
+        ),
         body: StreamBuilder<FlowState>(
             stream: _viewModel.outputState,
             builder: (context, snapshot) =>
@@ -232,13 +307,15 @@ class _IncidenceViewState extends State<IncidenceView> {
                             value: incidenceSel?.priority != ''
                                 ? incidenceSel?.priority
                                 : null,
-                            onChanged:widget.incidenceId == 'new'? (value) {
-                              _viewModel.changeIncidenceSel(IncidenceSel(
-                                  area: incidenceSel?.area,
-                                  priority: value,
-                                  active: incidenceSel?.active,
-                                  image: incidenceSel?.image));
-                            }:null,
+                            onChanged: widget.incidenceId == 'new'
+                                ? (value) {
+                                    _viewModel.changeIncidenceSel(IncidenceSel(
+                                        area: incidenceSel?.area,
+                                        priority: value,
+                                        active: incidenceSel?.active,
+                                        image: incidenceSel?.image));
+                                  }
+                                : null,
                             validator: (value) => (value?.isNotEmpty ?? false)
                                 ? null
                                 : s.priorityError,

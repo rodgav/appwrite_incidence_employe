@@ -70,9 +70,6 @@ class RouteGenerator {
   static unDefinedRoute(BuildContext context) {
     final s = S.of(context);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(s.noRouteFound),
-      ),
       body: Center(child: Text(s.noRouteFound)),
     );
   }
