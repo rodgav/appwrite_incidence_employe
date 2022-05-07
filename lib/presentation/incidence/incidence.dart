@@ -44,12 +44,14 @@ class _IncidenceViewState extends State<IncidenceView> {
 
   final _formKey = GlobalKey<FormState>();
   bool active = false;
+  Incidence? _incidence;
 
   _bind() {
     _viewModel.start();
     if (widget.incidenceId != 'new') {
       if (widget.incidence != null) {
         //send data to form
+        _incidence = widget.incidence;
         final incidence = widget.incidence!;
         _nameTxtEditCtrl.text = incidence.name;
         _descrTxtEditCtrl.text = incidence.description;
@@ -68,6 +70,7 @@ class _IncidenceViewState extends State<IncidenceView> {
           final incidence =
               await _viewModel.incidence(context, widget.incidenceId);
           if (incidence != null) {
+            _incidence = incidence;
             _nameTxtEditCtrl.text = incidence.name;
             _descrTxtEditCtrl.text = incidence.description;
             _dateCreateTxtEditCtrl.text = incidence.dateCreate.toString();
@@ -84,6 +87,7 @@ class _IncidenceViewState extends State<IncidenceView> {
       }
     } else {
       _dateCreateTxtEditCtrl.text = (DateTime.now()).toString();
+      _dateSolutionTxtEditCtrl.text = (DateTime.now()).toString();
       _employeTxtEditCtrl.text = _appPreferences.getName();
     }
   }
@@ -105,14 +109,18 @@ class _IncidenceViewState extends State<IncidenceView> {
     final size = MediaQuery.of(context).size;
     final s = S.of(context);
     return Scaffold(
+        backgroundColor: ColorManager.primary.withOpacity(0.7),
         appBar: AppBar(
           backgroundColor: ColorManager.white,
-          title: SizedBox(
-              height: AppSize.s60,
-              child: Image.asset(
-                ImageAssets.logo,
-                fit: BoxFit.contain,
-              )),
+          title: GestureDetector(
+            child: SizedBox(
+                height: AppSize.s60,
+                child: Image.asset(
+                  ImageAssets.logo,
+                  fit: BoxFit.contain,
+                )),
+            onTap: () => GoRouter.of(context).go(Routes.mainRoute),
+          ),
           centerTitle: false,
           actions: [
             SizedBox(
@@ -197,7 +205,8 @@ class _IncidenceViewState extends State<IncidenceView> {
   Widget _data(double width, S s) {
     return Align(
       alignment: Alignment.topCenter,
-      child: SizedBox(
+      child: Container(
+        color: ColorManager.white,
         width: width,
         child: Form(
           key: _formKey,
@@ -339,15 +348,16 @@ class _IncidenceViewState extends State<IncidenceView> {
                                       _dateCreateTxtEditCtrl.text),
                                   image: incidenceSel?.image ?? '',
                                   priority: incidenceSel?.priority ?? '',
-                                  area: _appPreferences.getTypeUser(),
+                                  area: _appPreferences.getArea(),
                                   employe: _employeTxtEditCtrl.text.trim(),
                                   supervisor: '',
                                   solution: '',
-                                  dateSolution: DateTime.now(),
-                                  active: incidenceSel?.active ?? true,
+                                  dateSolution: DateTime.parse(
+                                      _dateSolutionTxtEditCtrl.text),
+                                  active: true,
                                   read: [],
                                   write: [],
-                                  id: widget.incidence?.id ?? '',
+                                  id: _incidence?.id ?? '',
                                   collection: '');
                               _viewModel.createIncidence(incidence, context);
                             }

@@ -28,6 +28,7 @@ class MainViewModel extends BaseViewModel
   final _isLoading = BehaviorSubject<bool>();
   final _userStrCtrl = BehaviorSubject<UsersModel>();
   final List<Incidence> _incidences = [];
+  int total = 0;
 
   @override
   void start() {
@@ -38,6 +39,7 @@ class MainViewModel extends BaseViewModel
 
   @override
   void dispose() async {
+    _incidences.clear();
     await _incidencesStrCtrl.drain();
     _incidencesStrCtrl.close();
     await _activesStrCtrl.drain();
@@ -45,7 +47,8 @@ class MainViewModel extends BaseViewModel
     await _incidenceSelStrCtrl.drain();
     _incidenceSelStrCtrl.close();
     await _isLoading.drain();
-    _isLoading.close();   await _userStrCtrl.drain();
+    _isLoading.close();
+    await _userStrCtrl.drain();
     _userStrCtrl.close();
     super.dispose();
   }
@@ -61,8 +64,10 @@ class MainViewModel extends BaseViewModel
 
   @override
   Sink get inputIsLoading => _isLoading.sink;
+
   @override
   Sink get inputUser => _userStrCtrl.sink;
+
   @override
   Stream<List<Incidence>> get outputIncidences =>
       _incidencesStrCtrl.stream.map((incidences) => incidences);
@@ -78,8 +83,10 @@ class MainViewModel extends BaseViewModel
   @override
   Stream<bool> get outputIsLoading =>
       _isLoading.stream.map((isLoading) => isLoading);
+
   @override
   Stream<UsersModel> get outputUser => _userStrCtrl.stream.map((user) => user);
+
   @override
   incidences(bool firstQuery) async {
     if (_incidences.isEmpty) {
@@ -87,18 +94,20 @@ class MainViewModel extends BaseViewModel
       (await _mainUseCase.execute(MainUseCaseInput(
               [Query.equal('employe', _appPreferences.getName())], 25, 0)))
           .fold((l) {}, (incidences) {
-        _incidences.addAll(incidences);
+        total = incidences.total;
+        _incidences.addAll(incidences.incidences);
         inputIncidences.add(_incidences);
       });
     } else {
       (await _mainUseCase.execute(MainUseCaseInput(
               [Query.equal('employe', _appPreferences.getName())],
               25,
-              _incidences.length > 1
+              _incidences.length < total
                   ? _incidences.length - 1
                   : _incidences.length)))
           .fold((l) {}, (incidences) {
-        _incidences.addAll(incidences);
+        total = incidences.total;
+        _incidences.addAll(incidences.incidences);
         inputIncidences.add(_incidences);
       });
       changeIsLoading(false);
@@ -115,7 +124,8 @@ class MainViewModel extends BaseViewModel
         Query.equal('active', active)
       ], 25, 0)))
           .fold((l) {}, (incidences) {
-        _incidences.addAll(incidences);
+        total = incidences.total;
+        _incidences.addAll(incidences.incidences);
         inputIncidences.add(_incidences);
       });
     } else {
@@ -125,11 +135,12 @@ class MainViewModel extends BaseViewModel
             Query.equal('active', active)
           ],
               25,
-              _incidences.length > 1
+              _incidences.length < total
                   ? _incidences.length - 1
                   : _incidences.length)))
           .fold((l) {}, (incidences) {
-        _incidences.addAll(incidences);
+        total = incidences.total;
+        _incidences.addAll(incidences.incidences);
         inputIncidences.add(_incidences);
       });
       changeIsLoading(false);
@@ -150,15 +161,16 @@ class MainViewModel extends BaseViewModel
     } else {
       await incidencesActive(incidenceSel.active ?? false);
     }
-  }  @override
+  }
+
+  @override
   deleteSession(BuildContext context) async {
     final s = S.of(context);
     inputState.add(LoadingState(
         stateRendererType: StateRendererType.fullScreenLoadingState,
         message: s.loading));
     final sessionId = _appPreferences.getSessionId();
-    (await _mainUseCase.deleteSession(sessionId))
-        .fold((f) {
+    (await _mainUseCase.deleteSession(sessionId)).fold((f) {
       inputState
           .add(ErrorState(StateRendererType.fullScreenErrorState, f.message));
     }, (r) async {
@@ -172,9 +184,9 @@ class MainViewModel extends BaseViewModel
   @override
   account() async {
     (await _mainUseCase.user(_appPreferences.getUserId())).fold((f) => null,
-            (user) async {
-          inputUser.add(user);
-        });
+        (user) async {
+      inputUser.add(user);
+    });
   }
 }
 
@@ -185,7 +197,9 @@ abstract class MainViewModelInputs {
 
   Sink get inputIncidenceSel;
 
-  Sink get inputIsLoading; Sink get inputUser;
+  Sink get inputIsLoading;
+
+  Sink get inputUser;
 
   incidences(bool firstQuery);
 
@@ -193,7 +207,9 @@ abstract class MainViewModelInputs {
 
   changeIsLoading(bool isLoading);
 
-  changeIncidenceSel(IncidenceSel incidenceSel);deleteSession(BuildContext context);
+  changeIncidenceSel(IncidenceSel incidenceSel);
+
+  deleteSession(BuildContext context);
 
   account();
 }
@@ -206,5 +222,6 @@ abstract class MainViewModelOutputs {
   Stream<IncidenceSel> get outputIncidenceSel;
 
   Stream<bool> get outputIsLoading;
+
   Stream<UsersModel> get outputUser;
 }

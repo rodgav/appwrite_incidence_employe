@@ -7,7 +7,7 @@ import 'package:dartz/dartz.dart';
 
 class MainUseCase
     implements
-        BaseUseCase<MainUseCaseInput, List<Incidence>>,
+        BaseUseCase<MainUseCaseInput, Incidences>,
         MainUseCaseDeleteSession<String, dynamic>,
         MainUseCaseAccount<String, UsersModel> {
   final Repository _repository;
@@ -15,7 +15,7 @@ class MainUseCase
   MainUseCase(this._repository);
 
   @override
-  Future<Either<Failure, List<Incidence>>> execute(MainUseCaseInput input) =>
+  Future<Either<Failure, Incidences>> execute(MainUseCaseInput input) =>
       _repository.incidences(input.queries, input.limit, input.offset);
 
   @override

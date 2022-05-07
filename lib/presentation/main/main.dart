@@ -50,14 +50,18 @@ class _MainViewState extends State<MainView> {
     final size = MediaQuery.of(context).size;
     final s = S.of(context);
     return Scaffold(
+      backgroundColor: ColorManager.primary.withOpacity(0.7),
       appBar: AppBar(
         backgroundColor: ColorManager.white,
-        title: SizedBox(
-            height: AppSize.s60,
-            child: Image.asset(
-              ImageAssets.logo,
-              fit: BoxFit.contain,
-            )),
+        title: GestureDetector(
+          child: SizedBox(
+              height: AppSize.s60,
+              child: Image.asset(
+                ImageAssets.logo,
+                fit: BoxFit.contain,
+              )),
+          onTap: () => GoRouter.of(context).go(Routes.mainRoute),
+        ),
         centerTitle: false,
         actions: [
           SizedBox(
@@ -144,7 +148,8 @@ class _MainViewState extends State<MainView> {
 
   Widget _data(double width, S s) {
     return Center(
-      child: SizedBox(
+      child: Container(
+        color: ColorManager.white,
         width: width,
         child: StreamBuilder<IncidenceSel>(
             stream: _viewModel.outputIncidenceSel,

@@ -46,6 +46,7 @@ class _LoginViewState extends State<LoginView> {
     final size = MediaQuery.of(context).size;
     final s = S.of(context);
     return Scaffold(
+        backgroundColor: ColorManager.primary.withOpacity(0.7),
         body: StreamBuilder<FlowState>(
             stream: _viewModel.outputState,
             builder: (_, snapshot) =>
@@ -66,7 +67,8 @@ class _LoginViewState extends State<LoginView> {
 
   Widget _form(double width, S s) {
     return Center(
-      child: SizedBox(
+      child: Container(
+        color: ColorManager.white,
         width: width,
         child: SingleChildScrollView(
           child: Padding(
@@ -103,26 +105,26 @@ class _LoginViewState extends State<LoginView> {
                 StreamBuilder<bool>(
                     stream: _viewModel.outputInputValid,
                     builder: (_, snapshot) => SizedBox(
-                      width: double.infinity,
-                      height: AppSize.s40,
-                      child: ElevatedButton(
-                          style: Theme.of(context)
-                              .elevatedButtonTheme
-                              .style!
-                              .copyWith(
-                              backgroundColor:
-                              MaterialStateProperty.all(
-                                  (snapshot.data ?? false)
-                                      ? ColorManager.primary
-                                      : ColorManager.white),
-                              side: MaterialStateProperty.all(
-                                  BorderSide(
-                                      color: ColorManager.primary))),
-                          onPressed: (snapshot.data ?? false)
-                              ? () => _viewModel.login(context)
-                              : null,
-                          child: Text(s.login)),
-                    )),
+                          width: double.infinity,
+                          height: AppSize.s40,
+                          child: ElevatedButton(
+                              style: Theme.of(context)
+                                  .elevatedButtonTheme
+                                  .style!
+                                  .copyWith(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              (snapshot.data ?? false)
+                                                  ? ColorManager.primary
+                                                  : ColorManager.white),
+                                      side: MaterialStateProperty.all(
+                                          BorderSide(
+                                              color: ColorManager.primary))),
+                              onPressed: (snapshot.data ?? false)
+                                  ? () => _viewModel.login(context)
+                                  : null,
+                              child: Text(s.login)),
+                        )),
                 const SizedBox(height: AppSize.s10),
                 TextButton(
                     onPressed: () =>

@@ -40,6 +40,7 @@ class IncidenceViewModel extends BaseViewModel
 
   @override
   void dispose() async {
+    inputIncidenceSel.add(IncidenceSel());
     await _prioritysStrCtrl.drain();
     _prioritysStrCtrl.close();
     await _incidenceSelStrCtrl.drain();

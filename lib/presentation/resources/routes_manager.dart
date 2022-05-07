@@ -22,7 +22,7 @@ class RouteGenerator {
   static final AppPreferences _appPreferences = instance<AppPreferences>();
 
   static final router = GoRouter(
-    routerNeglect: true,
+      routerNeglect: true,
       routes: [
         GoRoute(
             path: Routes.splashRoute,
@@ -48,7 +48,7 @@ class RouteGenerator {
               return const MainView();
             }),
         GoRoute(
-            path: Routes.incidenceRoute+'/:inId',
+            path: Routes.incidenceRoute + '/:inId',
             builder: (context, state) {
               initIncidenceModule();
               return IncidenceView(state.params['inId']!,
@@ -61,7 +61,8 @@ class RouteGenerator {
       redirect: (state) {
         final loggedIn = _appPreferences.getSessionId() != '';
         final loggingIn = state.subloc == Routes.splashRoute ||
-            state.subloc == Routes.loginRoute;
+            state.subloc == Routes.loginRoute ||
+            state.subloc == Routes.forgotPasswordRoute;
         if (!loggedIn) return loggingIn ? null : Routes.splashRoute;
         if (loggingIn) return Routes.mainRoute;
         return null;
