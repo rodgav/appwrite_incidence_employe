@@ -38,5 +38,6 @@
   "user": "User",
   "typeUser": "Type user",
   "area": "Area",
-  "changeLanguage": "Change language"
+  "changeLanguage": "Change language",
+  "haveAccount": "Have account"
 }

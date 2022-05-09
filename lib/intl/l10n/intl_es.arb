@@ -38,5 +38,6 @@
   "user": "Usuario",
   "typeUser": "Tipo de usuario",
   "area": "Área",
-  "changeLanguage": "Cambiar de lenguaje"
+  "changeLanguage": "Cambiar de lenguaje",
+  "haveAccount": "Tengo una cuenta"
 }

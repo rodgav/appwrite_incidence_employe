@@ -198,13 +198,12 @@ class _IncidenceViewState extends State<IncidenceView> {
 
   Widget _getContentWidget(Size size, S s) {
     return ResponsiveWid(
-        smallScreen: _data(size.width * 0.8, s),
+        smallScreen: _data(size.width*0.8, s),
         largeScreen: _data(size.width * 0.5, s));
   }
 
   Widget _data(double width, S s) {
-    return Align(
-      alignment: Alignment.topCenter,
+    return Center(
       child: Container(
         color: ColorManager.white,
         width: width,

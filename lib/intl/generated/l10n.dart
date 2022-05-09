@@ -439,6 +439,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Tengo una cuenta`
+  String get haveAccount {
+    return Intl.message(
+      'Tengo una cuenta',
+      name: 'haveAccount',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
